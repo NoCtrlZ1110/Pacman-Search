@@ -47,7 +47,7 @@ python pacman.py -l bigMaze -p SearchAgent -a fn=bfs -z .5
 ```
 
 ```python
-python autograder.py
+python eightpuzzle.py
 ```
 
 #### Mô tả :
@@ -55,3 +55,29 @@ python autograder.py
 ![Question 2](./done/question2.png)
 
 👉 Tương tự `Question 1` nhưng thay vì sử dụng `Stack` thì ta sử dụng `Queue` để duyệt BFS
+
+### [**Question 3️⃣ ( uniformCostSearch )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/3)
+
+```python
+python pacman.py -l mediumMaze -p SearchAgent -a fn=ucs
+```
+
+```python
+python pacman.py -l mediumDottedMaze -p StayEastSearchAgent
+```
+
+```python
+python pacman.py -l mediumScaryMaze -p StayWestSearchAgent
+```
+
+#### Mô tả :
+
+![Question 3](./done/question3.png)
+
+👉 Thay vì sử dụng Queue thông thường, ta sử dụng PriorityQueue (hàng đợi ưu tiên) để duyệt UCS. Các node có mức độ ưu tiên cao hơn (chi phí thấp hơn) sẽ được duyệt trước.
+
+👉 `oldNode` sử dụng kiểu `dict` thay vì `set` như các câu hỏi trước
+
+👉 Trong quá trình duyệt các node, nếu phát hiện ra chi phí thấp hơn để tới `currentNodeState` thì tiến hành gán lại chi phí cho `currentNodeState` trong `oldNode`
+
+👉 Duyệt `UCS` cho đến khi `nodePriorityQueue` không còn phần tử nào hoặc khi đạt được tới `goalState`
