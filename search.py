@@ -145,7 +145,6 @@ def uniformCostSearch(problem):
     "*** YOUR CODE HERE ***"
 
     nodePriorityQueue = util.PriorityQueue()
-    test = util.PriorityQueue()
 
     nodePriorityQueue.push((problem.getStartState(), [], 0), 0)
     oldNode = {}
@@ -181,6 +180,41 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+
+    nodePriorityQueue = util.PriorityQueue()
+
+    nodePriorityQueue.push((problem.getStartState(), [], 0), 0)
+    oldNode = set()
+
+    while not nodePriorityQueue.isEmpty():
+
+        currentNodeState, move, cost = nodePriorityQueue.pop()
+
+        oldNode.add((currentNodeState, cost))
+
+        if (problem.isGoalState(currentNodeState)):
+            return move
+        else:
+
+            for next in problem.getSuccessors(currentNodeState):
+
+                _move = move + [next[1]]
+                _cost = problem.getCostOfActions(_move)
+                _node = (next[0], _move, _cost)
+
+                check = False
+
+                for old in oldNode:
+                    if(next[0] == old[0] and _cost >= old[1]):
+                        check = True
+
+                if (not check):
+                    nodePriorityQueue.push(
+                        _node, _cost + heuristic(next[0], problem))
+                    oldNode.add((next[0], _cost))
+
+    return move
+
     util.raiseNotDefined()
 
 

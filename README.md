@@ -81,3 +81,17 @@ python pacman.py -l mediumScaryMaze -p StayWestSearchAgent
 👉 Trong quá trình duyệt các node, nếu phát hiện ra chi phí thấp hơn để tới `currentNodeState` thì tiến hành gán lại chi phí cho `currentNodeState` trong `oldNode`
 
 👉 Duyệt `UCS` cho đến khi `nodePriorityQueue` không còn phần tử nào hoặc khi đạt được tới `goalState`
+
+### [**Question 4️⃣ ( A\* search )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/4)
+
+```python
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
+```
+
+#### Mô tả :
+
+![Question 4](./done/question4.png)
+
+👉 Sử dụng `Priority Queue` tương tự Question 3.
+
+👉 Thay đổi công thức tính độ ưu tiên của từng node trong `Priority Queue` theo công thức `F = G + H`
