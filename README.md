@@ -95,3 +95,26 @@ python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattan
 👉 Sử dụng `Priority Queue` tương tự Question 3.
 
 👉 Thay đổi công thức tính độ ưu tiên của từng node trong `Priority Queue` theo công thức `F = G + H`
+
+### [**Question 5️⃣ ( CornersProblem )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/5)
+
+```python
+python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+```
+
+```python
+python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+```
+
+#### Mô tả :
+
+![Question 5](./done/question5.png)
+
+👉 Tại hàm init ta lưu lại trạng thái bắt đầu của Pacman, có thể lấy bằng hàm `getStartState(...)`.
+Kiểm tra Pacman khi bắt đầu đã nằm ở bất kỳ góc nào hay chưa.
+
+👉 `isGoalState(...)` kiểm tra Pacman đã tới tất cả các góc hay chưa và trả về True/False
+
+👉 `getSuccessors(...)` kiểm tra các hướng (xem có tường hay không), cập nhật trạng thái và trả về các `successors` có thể đi được.
+
+👉 Sử dụng các thuật toán tìm kiếm đã làm ở các Question trên để giải quyết bài toán
