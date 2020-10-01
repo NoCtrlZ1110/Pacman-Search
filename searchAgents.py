@@ -399,6 +399,42 @@ class CornersProblem(search.SearchProblem):
                 return 999999
         return len(actions)
 
+def findClosestPoint(location, goalArray):
+    """
+    Helper function for corners
+    """
+    
+    closestPoint = 0
+    closestPointCost = util.manhattanDistance( location, goalArray[0] )
+    
+    for j in range(len(goalArray)):
+        cornerLocation = goalArray[j]
+        lengthToCorner = util.manhattanDistance( location, cornerLocation )
+        
+        if lengthToCorner < closestPointCost:
+            closestPoint = j
+            closestPointCost = lengthToCorner
+
+    return (closestPoint, closestPointCost)
+
+def findFarthestPoint(location, goalArray):
+    """
+    Helper function for corners
+    """
+    
+    farthestPoint = 0
+    farthestPointCost = util.manhattanDistance( location, goalArray[0] )
+    
+    for j in range(len(goalArray)):
+        cornerLocation = goalArray[j]
+        lengthToCorner = util.manhattanDistance( location, cornerLocation )
+        
+        if lengthToCorner > farthestPointCost:
+            farthestPoint = j
+            farthestPointCost = lengthToCorner
+
+    return (farthestPoint, farthestPointCost)
+
 
 def cornersHeuristic(state, problem):
     """
@@ -418,7 +454,24 @@ def cornersHeuristic(state, problem):
     walls = problem.walls
 
     "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    node = state[0]
+    visitedCorners = state[1]
+
+    unvisitedCorners = []
+    sum = 0
+    for corner in corners:
+        if not corner in visitedCorners:
+            unvisitedCorners.append(corner)
+
+    currentPoint = node
+    while len(unvisitedCorners) > 0:
+        distance, corner = min([(util.manhattanDistance(currentPoint, corner), corner) for corner in unvisitedCorners])
+        sum += distance
+        currentPoint = corner
+        unvisitedCorners.remove(corner)
+        
+    return sum
+    # return 0  # Default to trivial solution
 
 
 class AStarCornersAgent(SearchAgent):
@@ -522,7 +575,28 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    heuristic = 0
+    foodList = foodGrid.asList()
+    
+    if len(foodList) > 0:
+        closestPoint = findClosestPoint(position, foodList)
+        farthestPoint = findFarthestPoint(position, foodList)
+        
+        closestPointIndex = closestPoint[0]
+        farthestPointIndex = farthestPoint[0]
+        
+        currentNode = problem.startingGameState
+        closestFoodNode = foodList[closestPointIndex]
+        farthestFoodNode = foodList[farthestPointIndex]
+        
+        currentToClosest = mazeDistance(position, closestFoodNode, currentNode)
+        
+        closestToFarthest = mazeDistance(closestFoodNode, farthestFoodNode, currentNode)
+        
+        heuristic = currentToClosest + closestToFarthest
+    
+    return heuristic
+    # return 0
 
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -556,6 +630,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        return search.breadthFirstSearch(problem)
         util.raiseNotDefined()
 
 
@@ -593,6 +668,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x, y = state
 
         "*** YOUR CODE HERE ***"
+   
+        return self.food[x][y]
         util.raiseNotDefined()
 
 
