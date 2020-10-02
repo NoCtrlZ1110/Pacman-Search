@@ -1,4 +1,3 @@
-from pprint import pprint
 # searchAgents.py
 # ---------------
 # Licensing Information:  You are free to use or extend these projects for
@@ -311,16 +310,17 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
 
-        corners = []
+        visitedCorners = []
+        self.startingGameState = startingGameState
         startPos = self.startingPosition
     
         for i in range(4) :
             if startPos == self.corners[i]:
-                corners.append(True)
+                visitedCorners.append(True)
             else:
-                corners.append(False)
+                visitedCorners.append(False)
         
-        self.startState = (startPos,tuple(corners))
+        self.startState = (startPos,tuple(visitedCorners))
 
     def getStartState(self):
         """
@@ -400,40 +400,34 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 def findClosestPoint(location, goalArray):
-    """
-    Helper function for corners
-    """
     
-    closestPoint = 0
-    closestPointCost = util.manhattanDistance( location, goalArray[0] )
+    closest = 0
+    closestCost = util.manhattanDistance( location, goalArray[0] )
     
     for j in range(len(goalArray)):
         cornerLocation = goalArray[j]
         lengthToCorner = util.manhattanDistance( location, cornerLocation )
         
-        if lengthToCorner < closestPointCost:
-            closestPoint = j
-            closestPointCost = lengthToCorner
+        if lengthToCorner < closestCost:
+            closest = j
+            closestCost = lengthToCorner
 
-    return (closestPoint, closestPointCost)
+    return (closest, closestCost)
 
 def findFarthestPoint(location, goalArray):
-    """
-    Helper function for corners
-    """
     
-    farthestPoint = 0
-    farthestPointCost = util.manhattanDistance( location, goalArray[0] )
+    farthest = 0
+    farthestCost = util.manhattanDistance( location, goalArray[0] )
     
     for j in range(len(goalArray)):
         cornerLocation = goalArray[j]
         lengthToCorner = util.manhattanDistance( location, cornerLocation )
         
-        if lengthToCorner > farthestPointCost:
-            farthestPoint = j
-            farthestPointCost = lengthToCorner
+        if lengthToCorner > farthestCost:
+            farthest = j
+            farthestCost = lengthToCorner
 
-    return (farthestPoint, farthestPointCost)
+    return (farthest, farthestCost)
 
 
 def cornersHeuristic(state, problem):
@@ -454,24 +448,29 @@ def cornersHeuristic(state, problem):
     walls = problem.walls
 
     "*** YOUR CODE HERE ***"
-    node = state[0]
-    visitedCorners = state[1]
-
+    h = 0
+    currentLocation = state[0]
+    unvisited = state[1]
+    
     unvisitedCorners = []
-    sum = 0
-    for corner in corners:
-        if not corner in visitedCorners:
-            unvisitedCorners.append(corner)
+    for i in range(len(unvisited)):
+        if not unvisited[i]:
+            unvisitedCorners.append(corners[i])
 
-    currentPoint = node
-    while len(unvisitedCorners) > 0:
-        distance, corner = min([(util.manhattanDistance(currentPoint, corner), corner) for corner in unvisitedCorners])
-        sum += distance
-        currentPoint = corner
-        unvisitedCorners.remove(corner)
-        
-    return sum
-    # return 0  # Default to trivial solution
+    if len(unvisitedCorners) > 0:
+
+        closest = findClosestPoint(currentLocation, unvisitedCorners)
+        farthest = findFarthestPoint(currentLocation, unvisitedCorners)      
+  
+        closestNode = unvisitedCorners[closest[0]]
+        farthestNode = unvisitedCorners[farthest[0]]
+
+        currentToClosest = mazeDistance(currentLocation, closestNode, problem.startingGameState)
+        closestToFarthest = mazeDistance(closestNode, farthestNode, problem.startingGameState)
+
+        h = currentToClosest + closestToFarthest
+    
+    return h
 
 
 class AStarCornersAgent(SearchAgent):
@@ -575,27 +574,23 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    heuristic = 0
+    h = 0
     foodList = foodGrid.asList()
     
     if len(foodList) > 0:
-        closestPoint = findClosestPoint(position, foodList)
-        farthestPoint = findFarthestPoint(position, foodList)
-        
-        closestPointIndex = closestPoint[0]
-        farthestPointIndex = farthestPoint[0]
-        
+        closest = findClosestPoint(position, foodList)
+        farthest = findFarthestPoint(position, foodList)
+               
         currentNode = problem.startingGameState
-        closestFoodNode = foodList[closestPointIndex]
-        farthestFoodNode = foodList[farthestPointIndex]
+        closestFoodNode = foodList[closest[0]]
+        farthestFoodNode = foodList[farthest[0]]
         
-        currentToClosest = mazeDistance(position, closestFoodNode, currentNode)
-        
+        currentToClosest = mazeDistance(position, closestFoodNode, currentNode)        
         closestToFarthest = mazeDistance(closestFoodNode, farthestFoodNode, currentNode)
         
-        heuristic = currentToClosest + closestToFarthest
+        h = currentToClosest + closestToFarthest
     
-    return heuristic
+    return h
     # return 0
 
 

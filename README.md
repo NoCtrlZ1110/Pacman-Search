@@ -1,11 +1,13 @@
-# 18020651 - Nguyễn Văn Huy 😁
+# **[AI RESEARCHING] PACMAN PROJECT - SEARCH**
 
-## **How To Run? 🤔**
+## **[18020651 | K63J] - [Nguyễn Văn Huy](https://github.com/NoCtrlZ1110/) 😁**
 
-### Normal
+![Question 1](./done/pacman.gif)
 
-```
-py -2 pacman.py
+### **Normal Game**
+
+```python
+python pacman.py
 ```
 
 ### [**Question 1️⃣ ( depthFirstSearch )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/1)
@@ -118,3 +120,33 @@ Kiểm tra Pacman khi bắt đầu đã nằm ở bất kỳ góc nào hay chưa
 👉 `getSuccessors(...)` kiểm tra các hướng (xem có tường hay không), cập nhật trạng thái và trả về các `successors` có thể đi được.
 
 👉 Sử dụng các thuật toán tìm kiếm đã làm ở các Question trên để giải quyết bài toán
+
+### [**Question 6️⃣ ( Corners Problem: Heuristic )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/6)
+
+```python
+python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5
+```
+
+#### Mô tả :
+
+![Question 6](./done/question6.png)
+
+### [**Question 7️⃣ ( Eating All The Dots )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/7)
+
+```python
+python pacman.py -l testSearch -p AStarFoodSearchAgent
+```
+
+#### Mô tả :
+
+![Question 7](./done/question7.png)
+
+### [**Question 8️⃣ ( Suboptimal Search )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/8)
+
+```python
+python pacman.py -l bigSearch -p ClosestDotSearchAgent -z .5
+```
+
+#### Mô tả :
+
+![Question 8](./done/question8.png)
