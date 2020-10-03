@@ -2,6 +2,8 @@
 
 ## **[18020651 | K63J] - [Nguyễn Văn Huy](https://github.com/NoCtrlZ1110/) 😁**
 
+## **Link Youtube: https://youtu.be/namFF_x92Bo**
+
 ![Question 1](./done/pacman.gif)
 
 ### **Normal Game**
@@ -131,6 +133,12 @@ python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5
 
 ![Question 6](./done/question6.png)
 
+👉 Tạo thêm 2 hàm mới `findClosestPoint` và `findFarthesetPoint` trả về node gần nhất và xa nhất so với node hiện tại phục vụ cho việc tính toán ở Question #6 và #7
+
+👉 Mảng `unvisitedCorner` chứa các góc chưa được đi tới
+
+👉 `Heuristic` = `currentToClosest` + `closestToFarthest`
+
 ### [**Question 7️⃣ ( Eating All The Dots )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/7)
 
 ```python
@@ -140,6 +148,11 @@ python pacman.py -l testSearch -p AStarFoodSearchAgent
 #### Mô tả :
 
 ![Question 7](./done/question7.png)
+👉 Sử dụng `findClosestPoint` và `findFarthesetPoint` đã viết từ Question #6
+
+👉 Thay vì một mảng chứa các góc chưa đi tới như #6, ở #7 ta dùng list `foodList` để lưu vị trí các food.
+
+👉 Thuật toán tương tự với Question #6
 
 ### [**Question 8️⃣ ( Suboptimal Search )**](https://github.com/NoCtrlZ1110/Pacman-Search/issues/8)
 
@@ -150,3 +163,7 @@ python pacman.py -l bigSearch -p ClosestDotSearchAgent -z .5
 #### Mô tả :
 
 ![Question 8](./done/question8.png)
+
+👉 Sử dụng thuật toán BreathFirstSearch để giải quyết bài toán
+
+👉 `isGoalState` trả về trạng thái của vị trí hiện tại có phải là đích hay không
